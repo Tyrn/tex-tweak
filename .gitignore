@@ -1,0 +1,12 @@
+*
+#!Makefile
+!.gitattributes
+!.gitignore
+!.gitkeep
+!*.md
+!*.rst
+!*.toml
+!*.lock
+!*.tex
+!*.py
+!*/
