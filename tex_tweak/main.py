@@ -1,5 +1,6 @@
 import sys
 import os
+import asyncio
 import argparse
 import warnings
 from pathlib import Path
@@ -52,6 +53,27 @@ def tweak():
         print(f"{i}")
 
 
+async def traverse_target_tree_async(tgt_dir):
+    """Recursively traverses the target directory [tgt_dir]
+    and yields a sequence of file names.
+    """
+    dirs, files = list_dir_groom(tgt_dir)
+
+    for d in dirs:
+        async for f in traverse_target_tree_async(d):
+            yield f
+
+    for f in files:
+        yield f
+
+
+async def tweak_async():
+    """Tweak all files.
+    """
+    async for i in traverse_target_tree_async(ARGS.tgt_dir):
+        print(f"{i}")
+
+
 def retrieve_args():
     """Retrieve Command Line Arguments.
     """
@@ -78,6 +100,7 @@ def main():
         warnings.simplefilter("ignore")
 
         ARGS = retrieve_args()
-        tweak()
+        #tweak()
+        asyncio.run(tweak_async())
     except KeyboardInterrupt as e:
         sys.exit(e)
