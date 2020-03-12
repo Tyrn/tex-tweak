@@ -23,34 +23,14 @@ def list_dir_groom(abs_path):
 
     for i in os.listdir(abs_path):
         if i[0] != ".":
-            x = abs_path.joinpath(i)
-            if x.is_dir():
-                dirs.append(x)
+            path = abs_path.joinpath(i)
+            if path.is_dir():
+                dirs.append(path)
             else:
-                if is_target_file(x):
-                    files.append(x)
+                if is_target_file(path):
+                    files.append(path)
 
     return dirs, files
-
-
-def traverse_target_tree_sync(tgt_dir):
-    """Recursively traverses the target directory [tgt_dir]
-    and yields a sequence of file names.
-    """
-    dirs, files = list_dir_groom(tgt_dir)
-
-    for d in dirs:
-        yield from traverse_target_tree_sync(d)
-
-    for f in files:
-        yield f
-
-
-def tweak_sync():
-    """Tweak all files.
-    """
-    for i in traverse_target_tree_sync(ARGS.tgt_dir):
-        print(f"{i}")
 
 
 async def traverse_target_tree(tgt_dir):
@@ -59,12 +39,12 @@ async def traverse_target_tree(tgt_dir):
     """
     dirs, files = list_dir_groom(tgt_dir)
 
-    for d in dirs:
-        async for f in traverse_target_tree(d):
-            yield f
+    for directory in dirs:
+        async for file in traverse_target_tree(directory):
+            yield file
 
-    for f in files:
-        yield f
+    for file in files:
+        yield file
 
 
 async def tweak():
@@ -84,10 +64,11 @@ def retrieve_args():
 
     parser.add_argument("-v", "--verbose", help="verbose output", action="store_true")
     parser.add_argument("tgt_dir", help="target directory")
-    rg = parser.parse_args()
-    rg.tgt_dir = Path(rg.tgt_dir).absolute()  # Takes care of the trailing slash, too.
 
-    return rg
+    args = parser.parse_args()
+    args.tgt_dir = Path(args.tgt_dir).absolute()  # Takes care of the trailing slash, too.
+
+    return args
 
 
 def main():
@@ -100,7 +81,6 @@ def main():
         warnings.simplefilter("ignore")
 
         ARGS = retrieve_args()
-        #tweak_sync()
         asyncio.run(tweak())
-    except KeyboardInterrupt as e:
-        sys.exit(e)
+    except KeyboardInterrupt as kbd:
+        sys.exit(kbd)
