@@ -33,44 +33,44 @@ def list_dir_groom(abs_path):
     return dirs, files
 
 
-def traverse_target_tree(tgt_dir):
+def traverse_target_tree_sync(tgt_dir):
     """Recursively traverses the target directory [tgt_dir]
     and yields a sequence of file names.
     """
     dirs, files = list_dir_groom(tgt_dir)
 
     for d in dirs:
-        yield from traverse_target_tree(d)
+        yield from traverse_target_tree_sync(d)
 
     for f in files:
         yield f
 
 
-def tweak():
+def tweak_sync():
     """Tweak all files.
     """
-    for i in traverse_target_tree(ARGS.tgt_dir):
+    for i in traverse_target_tree_sync(ARGS.tgt_dir):
         print(f"{i}")
 
 
-async def traverse_target_tree_async(tgt_dir):
+async def traverse_target_tree(tgt_dir):
     """Recursively traverses the target directory [tgt_dir]
     and yields a sequence of file names.
     """
     dirs, files = list_dir_groom(tgt_dir)
 
     for d in dirs:
-        async for f in traverse_target_tree_async(d):
+        async for f in traverse_target_tree(d):
             yield f
 
     for f in files:
         yield f
 
 
-async def tweak_async():
+async def tweak():
     """Tweak all files.
     """
-    async for i in traverse_target_tree_async(ARGS.tgt_dir):
+    async for i in traverse_target_tree(ARGS.tgt_dir):
         print(f"{i}")
 
 
@@ -100,7 +100,7 @@ def main():
         warnings.simplefilter("ignore")
 
         ARGS = retrieve_args()
-        #tweak()
-        asyncio.run(tweak_async())
+        #tweak_sync()
+        asyncio.run(tweak())
     except KeyboardInterrupt as e:
         sys.exit(e)
