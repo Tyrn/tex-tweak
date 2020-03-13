@@ -66,7 +66,9 @@ def retrieve_args():
     parser.add_argument("tgt_dir", help="target directory")
 
     args = parser.parse_args()
-    args.tgt_dir = Path(args.tgt_dir).absolute()  # Takes care of the trailing slash, too.
+    args.tgt_dir = Path(
+        args.tgt_dir
+    ).absolute()  # Takes care of the trailing slash, too.
 
     return args
 
