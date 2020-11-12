@@ -9,5 +9,5 @@ poetry.lock
 *.vim
 *.geany
 .idea
-.sublime-project
-.sublime-workspace
+*.sublime-project
+*.sublime-workspace
