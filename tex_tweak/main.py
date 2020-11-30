@@ -1,21 +1,28 @@
+"""
+LaTeX source tweaker.
+"""
 import sys
 import os
 import asyncio
 import argparse
 import warnings
 from pathlib import Path
+from typing import List, Tuple, AsyncIterator, Any
 
 
-ARGS = None
+ARGS: Any = None
 
 
-def is_target_file(file):
-    """Returns true for a valid target [file]."""
+def is_target_file(file: Path) -> bool:
+    """
+    Returns true for a valid target [file].
+    """
     return file.is_file()
 
 
-def list_dir_groom(abs_path):
-    """Returns the list of directories
+def list_dir_groom(abs_path: Path) -> Tuple[List[Path], List[Path]]:
+    """
+    Returns the list of directories
     and the list of files ([abs_path] offspring).
     """
     dirs, files = [], []
@@ -32,8 +39,9 @@ def list_dir_groom(abs_path):
     return dirs, files
 
 
-async def traverse_target_tree(tgt_dir):
-    """Recursively traverses the target directory [tgt_dir]
+async def traverse_target_tree(tgt_dir: Path) -> AsyncIterator[Path]:
+    """
+    Recursively traverses the target directory [tgt_dir]
     and yields a sequence of file names.
     """
     dirs, files = list_dir_groom(tgt_dir)
@@ -46,14 +54,18 @@ async def traverse_target_tree(tgt_dir):
         yield file
 
 
-async def tweak():
-    """Tweak all files."""
+async def tweak() -> None:
+    """
+    Tweak all files.
+    """
     async for i in traverse_target_tree(ARGS.tgt_dir):
         print(f"{i}")
 
 
-def retrieve_args():
-    """Retrieve Command Line Arguments."""
+def retrieve_args() -> Any:
+    """
+    Retrieve Command Line Arguments.
+    """
     parser = argparse.ArgumentParser(
         description="""LaTeX code tweaker
         """
@@ -70,8 +82,10 @@ def retrieve_args():
     return args
 
 
-def main():
-    """Script entry point."""
+def main() -> None:
+    """
+    Script entry point.
+    """
     global ARGS
 
     try:
