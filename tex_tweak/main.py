@@ -10,8 +10,7 @@ ARGS = None
 
 
 def is_target_file(file):
-    """Returns true for a valid target [file].
-    """
+    """Returns true for a valid target [file]."""
     return file.is_file()
 
 
@@ -48,15 +47,13 @@ async def traverse_target_tree(tgt_dir):
 
 
 async def tweak():
-    """Tweak all files.
-    """
+    """Tweak all files."""
     async for i in traverse_target_tree(ARGS.tgt_dir):
         print(f"{i}")
 
 
 def retrieve_args():
-    """Retrieve Command Line Arguments.
-    """
+    """Retrieve Command Line Arguments."""
     parser = argparse.ArgumentParser(
         description="""LaTeX code tweaker
         """
@@ -74,8 +71,7 @@ def retrieve_args():
 
 
 def main():
-    """Script entry point.
-    """
+    """Script entry point."""
     global ARGS
 
     try:
