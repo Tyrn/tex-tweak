@@ -96,3 +96,7 @@ def main() -> None:
         asyncio.run(tweak())
     except KeyboardInterrupt as kbd:
         sys.exit(kbd)
+
+
+if __name__ == "__main__":
+    main()
