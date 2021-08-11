@@ -1,6 +1,6 @@
 FROM python:3.9-slim
 
-ARG user=procr project=tex-tweak src=tex_tweak
+ARG user=tweaker project=tex-tweak src=tex_tweak
 
 # Non-root user.
 RUN useradd -ms /bin/bash "$user"
@@ -20,7 +20,7 @@ RUN pip install poetry --user
 RUN poetry config virtualenvs.create false
 RUN poetry install --no-dev
 RUN poetry build
-RUN ttk .
+RUN ttk -v -p .
 
 #CMD [ "python", "./server.py" ]
 CMD echo "Hello, World!"

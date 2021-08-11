@@ -59,7 +59,11 @@ async def tweak() -> None:
     Tweak all files.
     """
     async for i in traverse_target_tree(ARGS.tgt_dir):
-        print(f"{i}")
+        if ARGS.verbose:
+            if ARGS.pretty:
+                print(f"✨ {i}")
+            else:
+                print(f"{i}")
 
 
 def retrieve_args() -> Any:
@@ -72,6 +76,7 @@ def retrieve_args() -> Any:
     )
 
     parser.add_argument("-v", "--verbose", help="verbose output", action="store_true")
+    parser.add_argument("-p", "--pretty", help="pretty output", action="store_true")
     parser.add_argument("tgt_dir", help="target directory")
 
     args = parser.parse_args()
