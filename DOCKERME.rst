@@ -16,7 +16,9 @@ Run
 
 ::
 
-    $ docker run -it --name twk --rm --mount type=bind,source="$HOME"/,target=/home/mnt tweaker
+    $ docker run -it --name tweaker --rm --mount type=bind,source="$HOME"/,target=/home/mnt tweaker
+
+- `--name tweaker` is the container name; tailing/`target` `tweaker` is the image name.
 
 Docker Compose
 ==============
