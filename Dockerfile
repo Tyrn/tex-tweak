@@ -13,7 +13,6 @@ RUN mkdir /home/$user/$project
 WORKDIR /home/$user/$project
 COPY $src ./$src/
 COPY pyproject.toml ./
-#COPY poetry.lock ./
 
 # Build.
 RUN pip install poetry --user && \
