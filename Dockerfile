@@ -1,4 +1,4 @@
-FROM python:3.9-slim
+FROM python:3.9.6-slim AS base
 
 ARG user=tweaker project=tex-tweak src=tex_tweak
 
@@ -19,6 +19,19 @@ COPY pyproject.toml ./
 RUN pip install poetry --user && \
     poetry config virtualenvs.create false && \
     poetry install --no-dev && \
-    poetry build
+    poetry build -f sdist
+
+FROM python:3.9.6-slim
+
+ARG user=tweaker project=tex-tweak
+
+# Non-root user.
+RUN useradd -ms /bin/bash "$user"
+USER $user
+WORKDIR /home/$user
+ENV PATH=/home/$user/.local/bin:$PATH
+
+COPY --from=base /home/$user/$project/dist/ ./dist/
+RUN pip install ./dist/* --user
 
 CMD ["bash"]
