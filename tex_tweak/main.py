@@ -97,6 +97,7 @@ def main() -> None:
 
         ARGS = retrieve_args()
         asyncio.run(tweak())
+        print("\U0001F53B \U0001f321")
     except KeyboardInterrupt as kbd:
         sys.exit(kbd)
 
